@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet"/>
+    <script>
+        var token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+        function deleteOption(optionID) {
+            fetch(`/options/${optionID}`, {
+                method: "delete",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({
+                    "_csrf":token
+                })
+            }).then((res)=>{
+                if (res.ok) {
+                    window.location.reload();
+                }
+            }).catch((err)=> console.error(err))
+        }
+        
+    </script>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        body {
+          background-image: url('https://wallpapercave.com/wp/m8wqdGZ.jpg');
+          
+        }
+        </style>
+    <title><%= title %></title>
+</head>
+<body>
+    <%- include('header.ejs') %>
+    <div>
+        <a href="/elections">All Elections</a>
+        >
+        <a href="/elections/<%= id %>/">Election</a>
+        >
+        <a href="/elections/<%= id %>/questions">Questions</a>
+    </div>
+            <div>
+                <% if (messages && messages.error && messages.error.length > 0) { %>
+                    <% for(var i=0; i<messages.error.length; i++) { %>
+                        <p><%= messages.error[i] %></p>
+                    <% } %>
+                <% } %>
+            </div>
+            <div>
+                <p></p>
+            </div>
+            <div style="margin-left:600px;">            
+                    <h2 style="color:blue">QUESTION</h2>   
+                    <br>                      
+                    <h3><%= title %></h3>                       
+                    <br>
+                    <h2 style="color:blue">DESCRIPTION</h2>                      
+                    <br>  
+                    <h3><%= description %></h3>                        
+                
+            </div>
+           
+            <br>    
+            <div style="margin-left:550px;">
+                <ol class="list-decimal">
+                    <% for(let i=0; i<options.length; i++) { %>
+                        <li class="option-item">
+                                <h4><%= options[i].option %>
+                                    <a href="/elections/<%= id %>/questions/<%= questionID %>/options/<%= options[i].id %>/edit" class="btn btn-outline-primary">Edit option</a>
+
+                                <a onclick="deleteOption(<%= options[i].id %>)" class="btn btn-outline-danger">Delete option</a>
+                                </h4>
+
+                        </li>
+                    <% } %>
+                </ol>
+            </div>
+            <form action="/elections/<%= id %>/questions/<%= questionID %>" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+            
+                <input type="text" name="option" placeholder="Enter an option" class="form-control" required />
+                <div style="margin-left:650px;">
+                <br>
+                <button type="submit" class="btn btn-outline-success">Add Answer option</button>
+                </div>
+            </form>
+            <p style="color: rgb(246, 61, 61);margin-left: 650;"><%= (options.length==0)?"You haven't added any options yet!":"" %></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet"/>
+    <title>Edit option</title>
+    <script>
+        var token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+        function updateOption() {
+            let electionID = <%= electionID %>;
+            let questionID = <%= questionID %>;
+            let optionID = <%= optionID %>;
+            let option = document.getElementById("option").value;
+            fetch(`/options/${optionID}/edit`, {
+                method: "put",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({
+                    "_csrf":token,
+                    "option":option,
+                })
+            }).then((res)=>{
+                if (res.ok) {
+                    window.location.replace(`/elections/${electionID}/questions/${questionID}`);
+                }
+            }).catch((err)=> console.error(err))
+        }
+    </script>
+</head>
+<style>
+    body {
+      background-image: url('https://wallpapercave.com/wp/m8wqdGZ.jpg');
+      
+    }
+    </style>
+<body>
+            <h2 style="margin-left:650px">Edit Option Here!</h2>
+            <div>
+                <% if (messages && messages.error && messages.error.length > 0) { %>
+                    <% for(var i=0; i<messages.error.length; i++) { %>
+                        <p><%= messages.error[i] %></p>
+                    <% } %>
+                <% } %>
+            </div>
+            <br>
+                <div>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                    <label for="option">Option</label>
+                    <input value="<%= option %>" id="option" name="option" type="text" placeholder="Option" class="form-control" required>
+                    <br>
+                    <div style="margin-left:700px">
+                    <button class="btn btn-outline-primary" onclick="updateOption()">Update option</button>
+                </div>
+                </div>
+            
+</body>
+</html>

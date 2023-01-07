@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="<%= csrfToken %>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet"/>
+    <script>
+        var token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+        function deleteVoter({electionID, voterID}) {
+            fetch(`/elections/${electionID}/voters/${voterID}`, {
+                method: "delete",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({
+                    "_csrf":token
+                })
+            }).then((res)=>{
+                if (res.ok) {
+                    window.location.reload();
+                }
+            }).catch((err)=> console.error(err))
+        }
+    </script>
+    <title><%= title %></title>
+</head>
+<style>
+    body {
+      background-image: url('https://wallpapercave.com/wp/m8wqdGZ.jpg');
+      
+    }
+    </style>
+<body>
+    <%- include('header.ejs') %>
+    <div>
+        
+        <a href="/elections">All Elections</a>
+        ->
+        <a href="/elections/<%= id %>/">Election</a>
+    </div>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    
+            
+            <div style="margin-left:600px;">
+                <h4><%= title %> - Voters</h4>
+                
+                <a href="/elections/<%= id %>/voters/create" class="btn btn-primary">Add New Voter</a>
+            </div>
+            <div style="margin-left:600px;">
+                <p style="color:red;"><%= (voters.length==0)?"You haven't added any voters yet!":"" %></p>
+                            
+                <h4 style="color:green;">Voter ID</h4>   
+                                         
+                    </div>
+                <div style="margin-left:600px;">
+                <ol class="list-decimal">
+                    <% for (let i=0; i<voters.length; i++) { %>
+                        <li>
+                            
+                            <h5><%= voters[i].voterid %> 
+                                <a href="/elections/<%= id %>/voters/<%= voters[i].id %>/edit" class="btn btn-outline-primary">Reset password</a>
+                                <a onclick="deleteVoter({electionID: <%= id %>, voterID: <%= voters[i].id %>})" class="btn btn-outline-danger">Delete voter</a>
+                            </h5>
+                        </li>
+                        
+                    <% } %>
+                </ol>
+            </div>
+</body>
+</html>

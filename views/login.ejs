@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet"/>
+    <title><%= title %></title>
+</head>
+<style>
+    body {
+      background-image: url('https://wallpapercave.com/wp/m8wqdGZ.jpg');
+      
+    }
+    </style>
+<body>
+    <div style="margin-top: 100px;">
+        <h1 style="margin-left: 550px;font-size: x-large;">Login to your account!</h1>
+            <div>
+                <% if (messages && messages.error && messages.error.length > 0) { %>
+                    <% for(var i=0; i<messages.error.length; i++) { %>
+                        <p><%= messages.error[i] %></p>
+                    <% } %>
+                <% } %>
+            </div>
+            <form action="/session" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="Email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" placeholder="Password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-success">Login</button>
+            </form>
+                <h6>Don't have an account?<a href="/signup" class="btn btn-warning"> Sign up</a></h6>
+        </div>
+</body>
+</html>
