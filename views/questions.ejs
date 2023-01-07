@@ -62,7 +62,7 @@
                         <a href="/elections/<%= id %>/questions/<%= questions[i].id %>/edit" class="btn btn-outline-primary">Edit question</a>
                         
                         <% if ((questions.length) > 1) { %>
-                            <a onclick="deleteQuestion({electionID: <%= id %>, questionID: <%= questions[i].id %>})" class="btn btn-outline-primary">Delete question</a>
+                            <a onclick="deleteQuestion({electionID: <%= id %>, questionID: <%= questions[i].id %>})" class="btn btn-outline-danger">Delete question</a>
 
                         <% } %>
                         </h4>
