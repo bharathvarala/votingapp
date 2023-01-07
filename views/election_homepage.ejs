@@ -17,22 +17,19 @@
 <body>
     <%- include('header.ejs') %>
     <div>
-        <h6><a href="/elections">All Elections</a><span>></span></h6>
+        <h6><a href="/elections">All Elections</a>-></h6>
     </div>
-    <div>
-        <h2><%= title %></h2>
-        <div class="my-8">
+        
+        <div style="margin-left: 500px;">
+            <h2>ELECTION : <%= title %></h2>
             <h3>This election has <span style="color: blue;"> <%= nq %> </span> questions in the ballot</h3>
             <a href="/elections/<%= id %>/questions" class="btn btn-primary">Manage questions</a>
-        </div>
-        <div class="my-8">
+            <br>
             <h3>This election has <span style="color: blue;"> <%= nv %> </span> registered voters.</h3>
             <a href="/elections/<%= id %>/voters" class="btn btn-primary">Manage voters</a>
-        <br>
-        <br>
-        </div>
+            <br>
+            <br>
             <a href="" class="btn btn-warning">Launch this election</a>
-        </div>
     </div>
 </body>
 </html>
